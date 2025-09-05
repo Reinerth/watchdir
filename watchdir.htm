@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>watchdir</title>
+
+    <link rel="icon" type="image/x-icon" href="./watchdir.png">
+
+    <style>
+
+        body {
+            font-size: 12px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #mainContainer{
+            position: relative;
+            float: left;
+            width: 100%;
+        }
+
+        #myMessageTitle{
+            height: auto;
+            position: relative;
+            width: fit-content;
+        }
+        #messageToUser{
+            border: 3px double lightseagreen;
+            z-index: 9;
+            width: 99%;
+            position: relative;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+
+        /* inputfield */
+        #myDirPathToWatch {
+            position: relative;
+            float: left;
+            width: 252px;
+            height: 30px;
+            top: 30px;
+        }
+
+
+        /* The coolest button in mankinds history ***********************************************/
+        /** online-tool for generating gradients: https://www.colorzilla.com/gradient-editor/ **/
+        .theButton {
+            position: relative;
+            z-index: 3;
+            left: 60px;
+            top: 30px;
+            width: 252px;
+            height: 32px;
+            border: 1px solid #333333;
+            line-height: 32px;
+            font-weight: bold;
+            font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+            text-align: center;
+            text-shadow: 0 1px 0px #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            padding: 0;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-bottom: 2px;
+            cursor: pointer;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            border-top-color: #aeafae;
+            border-bottom-color: #7c7e7c;
+            -webkit-box-shadow: inset 0px 1px 0px #fbfbfb, inset 1px 0px 0px #ededed, inset 0px -1px 0px #dfdfdf, inset -1px 0px 0px #ededed, 0px 1px 0px rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: inset 0px 1px 0px #fbfbfb, inset 1px 0px 0px #ededed, inset 0px -1px 0px #dfdfdf, inset -1px 0px 0px #ededed, 0px 1px 0px rgba(0, 0, 0, 0.15);
+            box-shadow: inset 0px 1px 0px #fbfbfb, inset 1px 0px 0px #ededed, inset 0px -1px 0px #dfdfdf, inset -1px 0px 0px #ededed, 0px 1px 0px rgba(0, 0, 0, 0.15);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#bdbdbd');
+            background-image: -moz-linear-gradient(top, #f8f8f8, #bdbdbd);
+            background-image: -ms-linear-gradient(top, #f8f8f8, #bdbdbd);
+            background-image: -webkit-gradient(linear, center top, center bottom, from(#f8f8f8), to(#bdbdbd));
+            background-image: -webkit-linear-gradient(top, #f8f8f8, #bdbdbd);
+            background-image: -o-linear-gradient(top, #f8f8f8, #bdbdbd);
+            background-image: linear-gradient(top, #f8f8f8, #bdbdbd);
+        }
+        .theButton:hover {
+            -webkit-box-shadow: inset 0px 1px 0px #fcfcfc, inset 1px 0px 0px #f0f0f0, inset 0px -1px 0px #e4e4e4, inset -1px 0px 0px #f0f0f0, 0px 1px 0px rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: inset 0px 1px 0px #fcfcfc, inset 1px 0px 0px #f0f0f0, inset 0px -1px 0px #e4e4e4, inset -1px 0px 0px #f0f0f0, 0px 1px 0px rgba(0, 0, 0, 0.15);
+            box-shadow: inset 0px 1px 0px #fcfcfc, inset 1px 0px 0px #f0f0f0, inset 0px -1px 0px #e4e4e4, inset -1px 0px 0px #f0f0f0, 0px 1px 0px rgba(0, 0, 0, 0.15);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#c9c9c9');
+            background-image: -moz-linear-gradient(top, #f8f8f8, #c9c9c9);
+            background-image: -ms-linear-gradient(top, #f8f8f8, #c9c9c9);
+            background-image: -webkit-gradient(linear, center top, center bottom, from(#f8f8f8), to(#c9c9c9));
+            background-image: -webkit-linear-gradient(top, #f8f8f8, #c9c9c9);
+            background-image: -o-linear-gradient(top, #f8f8f8, #c9c9c9);
+            background-image: linear-gradient(top, #f8f8f8, #c9c9c9);
+        }
+
+
+        .myDot{
+            position: relative;
+            margin-left: 3px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            float: left;
+            width: 10px;
+            height: 10px;
+            color: red;
+            border: 1px solid red;
+            border-radius: 6px;
+        }
+        .myProcessTimeCounter{
+            position: relative;
+            margin-left: 3px;
+            float: left;
+            width: auto;
+            height: 12px;
+            color: red;
+            border: 1px solid red;
+            border-radius: 6px;
+            padding: 5px;
+        }
+        #myWatchListTitle{
+            height: auto;
+            position: relative;
+            top: 60px;
+            width: fit-content;
+        }
+        #myWatchList{
+            border: 3px double lightseagreen;
+            width: 99%;
+            top: 60px;
+            position: relative;
+        }
+        #containerResetWatchingStatus{
+            position: relative;
+            display: none;
+            float: left;
+            width: 90%;
+            height: 50px;
+            top: 73px;
+        }
+        .atLeastOneChangeText{
+            position: relative;
+            float: left;
+            width: 320px;
+            height: 50px;
+            line-height: 50px;
+        }
+        .adaptButton{
+            top: 9px;
+            left: 0;
+        }
+        .myLineWatchlist{
+            padding: 3px;
+        }
+        .myWatchDir{
+            padding: 3px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-left: 30px;
+            display: inline-block;
+            color: blue;
+            text-decoration: underline;
+        }
+        .myWatchDir:hover{
+            background-color: aqua;
+            cursor: pointer;
+        }
+        .removeFromWatchList{
+            padding: 3px;
+            float: left;
+            color: blue;
+            text-decoration: underline;
+        }
+        .removeFromWatchList:hover{
+            background-color: darkorange;
+            cursor: pointer;
+        }
+
+        table{
+            border-color: lightseagreen;
+            width: 99.4%;
+        }
+        .tableHeader{
+            background-color: #b9b9b9;
+            font-weight: bold;
+        }
+        #myCheckedFilesList{
+            position: relative;
+            width: 100%;
+            height: auto;
+            padding-bottom: 300px;
+            top: 90px;
+        }
+        /* tr:hover{
+            background-color: rgb(194, 255, 254);
+        } */
+        .trHighlight{
+            background-color: #92cc16;
+        }
+        .myTableColumnHashes{
+            cursor: pointer;
+        }
+        /* this inputfield is hidden and is needed to copy the clicked hash to the clipboard for easy search of duplicate files by pressing Ctrl + F in browser */
+        #myClickedHashInClipboard{
+            visibility: visible;
+            position: absolute;
+            top: -100px;
+            left: -500px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- 
+        The story in spoken words:
+
+        This tool is doing following:
+        It collects and displays a list of given dir-pathes, 
+        (in the background it generates for every given path 
+        a txt-file where the files of that dir are listed)
+        and by clicking later on, on one of the pathes, 
+        it verifies the changes in the dir, since that point of time. 
+
+        The result is a table where the files are listed, 
+        and in the second column it shows the kind of change. 
+        (if a file-content was changed, if a file was added or deleted)
+
+        It also highlighting duplicates (even in other subdirs) 
+        on hovering the hash of the file (column 5).
+
+        If a file gets renamed, the tool shows two changes, 
+        one file deleted (and shows the old name) 
+        and one file added (and shows the new name) 
+        by hovering the hash of the file it shows, that the contents of both files are identical, 
+        means that the file was possibly renamed. 
+    -->
+
+    <div id="mainContainer">
+
+        <div id="myMessageTitle">message:</div>
+        <div id="messageToUser">
+            &nbsp;&nbsp;1. Paste a path of a dir (directory/folder) into the input-field and click "add".<br> 
+            &nbsp;&nbsp;You could get the path from your filemanagers adressbar. (doesnt matter if slash or backslash)<br>
+            &nbsp;&nbsp;An example-path: C:\Users\myself\Pictures\Saved Pictures <br><br>
+            &nbsp;&nbsp;2. Click on the path in watchlist (the right link), to verify changes of that dir. (Left link to delete from watchlist)<br><br>
+            &nbsp;&nbsp;3. Hovering the file-hash, highlights all files, that have the same content (find duplicates). <br>
+            &nbsp;&nbsp;Hovering on the file-hash, <u>and moving the cursor sideways out</u> from the hash, keeps them highlighted while scrolling.<br><br>
+            &nbsp;&nbsp;4. By clicking on the file-hash you have that hash automatically in your clipboard, <br>
+            &nbsp;&nbsp;by pressing now Ctrl + F you directly can see at the browsers scrollbar, where those files are in table. <br>
+            &nbsp;&nbsp;Additionally the amount of duplicate files are displayed now in the clicked cell.<br><br>
+            &nbsp;&nbsp;5. If at least one change was found in dir, click on "reset watching status (accept all changes)".<br>
+            &nbsp;&nbsp;That means, on verifying again this dir, the already highlighted/known changes, are not highlighted again. <br>
+        </div>
+
+        <div id="actionContainer">
+            <input type="text" id="myDirPathToWatch" name="myDirPathToWatch">
+            <div id="addPathToWatchList" class="theButton">add</div>
+
+            <div id="myWatchListTitle">watchlist:</div>
+            <div id="myWatchList"></div>
+            <div id="containerResetWatchingStatus">
+                <div class="atLeastOneChangeText">At least one change took place: </div>
+                <div id="resetWatchingStatus" class="theButton adaptButton">reset watching status (accept all changes)</div>
+            </div>
+            <div id="myCheckedFilesList"></div>
+            <!-- this inputfield is hidden and is needed to copy the clicked hash to the clipboard for easy search by pressing Ctrl + F in browser  -->
+            <input type="text" id="myClickedHashInClipboard">
+        </div>
+    </div>
+
+
+
+    <script>
+
+        'use strict'; /* Used traditional syntax and ES5, except "let". */
+
+        /** watchdir *******************************************************
+         * Constructing a class "watchdir" with private and public functions
+         * wherein we could use (call) the public functions 
+         * from other classes even if they are not instantiated at that time,
+         * because our container "watchdir" is global (in the window-scope).
+         * Means, we hoisted our container to window,
+         * so the functions are going to be executed 
+         * only after the window is loaded with the complete scripts.
+         * Works similar like the compiled files e.g. in C or JAVA. 
+         * In this way JavaScript is kind of precompiled for the browser.
+         * 
+         * You could find a template of this pattern here: 
+         * https://github.com/Reinerth/application-template-MVC-Pattern
+        */
+        window.watchdir = function (){
+
+
+            // Common settings needed inside this class (can only be accessed from this class)
+            let internalElems = {
+                myURLToGetWatchlist             : "./get-watch-list.php",
+                myURLToCheckDir                 : "./watchdir.php",
+                myURLToAddPathToWatchlist       : "./add-path-to-watch-list.php",
+                myURLToRemovePathFromWatchList  : "./remove-path-from-watch-list.php",
+                myURLToCreateFileListOfDir      : "./create-file-list-of-dir.php",
+                mainContainer                   : document.getElementById("mainContainer"),
+                actionContainer                 : document.getElementById("actionContainer"),
+                addPathToWatchList              : document.getElementById("addPathToWatchList"),
+                myDirPathToWatch                : document.getElementById("myDirPathToWatch"),
+                myWatchList                     : document.getElementById("myWatchList"),
+                messageToUser                   : document.getElementById("messageToUser"),
+                containerResetWatchingStatus    : document.getElementById("containerResetWatchingStatus"),
+                resetWatchingStatus             : document.getElementById("resetWatchingStatus"),
+                myCheckedFilesList              : document.getElementById("myCheckedFilesList"),
+                myClickedHashInClipboard        : document.getElementById("myClickedHashInClipboard"),
+                intervalToDisplayLoadingProcess : "",
+                intervalSecondCount             : 0,
+                allowedMinutsOfProcessing       : 3,
+                triggeredThisDirToBeWatched     : "unset",
+                resetWatchingStatusClicked      : "false"
+            };
+
+
+
+            /** This function "makeAJAXRequest" 
+             * can be used for AJAX-requests without or with parammeters
+             * e.g. for json- or php-files. 
+             * @param {string} callMeWhenReady - The substitute-name of the callbackfunction from the class
+             * @param {string} url - The request-url
+             * @param {string} param1 - Optional parameter
+             * @param {string} param2 - Optional parameter
+             * @param {string} param2 - Optional parameter
+             **/
+            let makeAJAXRequest = function(callMeWhenReady, url, param1, param2, param3){
+
+                let AJAXRequest = new XMLHttpRequest();
+
+                // GET is simpler and faster than POST, and can be used in most cases.
+                let method = "POST"; // POST or GET
+
+                // However, always use POST requests when:
+
+                // a) Sending user input with sensitive data 
+                //    or which can contain unknown characters (read about XSS), 
+                //    POST is more robust and secure than GET.
+                // b) Sending a large amount of data to the server (POST has no size limitations).
+
+                // Additional note: 
+                // Be aware: if making a Server-request via POST, 
+                // the application does not run in IIS.
+                // IIS-server does not accept POST-Requests. 
+
+                let parameters = "";
+
+                // In case that the request has parameters, we add them
+                if (typeof param1 != 'undefined' && param1 != null && param1 != ""){
+                    parameters = parameters + "param1=" + param1;
+                }
+                if (typeof param2 != 'undefined' && param2 != null && param2 != ""){
+                    parameters = parameters + "&param2=" + param2;
+                }
+                if (typeof param3 != 'undefined' && param3 != null && param3 != ""){
+                    parameters = parameters + "&param3=" + param3;
+                }
+
+                if (method == "GET"){
+                    parameters = "?" + parameters; // attaching first parameter in URL needs the questionmark
+                    url = url+parameters;
+                    AJAXRequest.open(method, url, true);
+                    AJAXRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    AJAXRequest.send();
+                } else { // POST
+                    AJAXRequest.open(method, url, true);
+                    AJAXRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    AJAXRequest.send(parameters);
+                }
+
+                AJAXRequest.onreadystatechange = function() {
+
+                    if (this.readyState == 4 && this.status == 200) { // on SUCCESS
+                        callMeWhenReady(AJAXRequest.responseText);
+                    }
+
+                    if (this.readyState == 4 && this.status != 200) { // on ERROR
+                        let fileError = "ERROR requesting the file-url:" + url;
+                        callMeWhenReady(fileError);
+                    }
+                };
+            };
+
+
+
+            let actionInProgressVisualization = function(){
+
+                internalElems.messageToUser.innerHTML = "";
+                internalElems.messageToUser.style.position = "absolute";
+                internalElems.actionContainer.style.display = "none"; // hide from user to avoid clicking again till list is not finished loading
+                internalElems.intervalSecondCount = 0; // reset to initial value
+
+                let makeACounter = document.createElement("div");
+                makeACounter.className = "myProcessTimeCounter";
+
+                // If process takes long time, we have a simple animation for displaying the loadig process
+                internalElems.intervalToDisplayLoadingProcess = setInterval(function(){
+
+                    let makeADot = document.createElement("div");
+
+                    internalElems.intervalSecondCount++;
+                    makeACounter.innerText = " process time " + internalElems.intervalSecondCount + " sec.";
+
+                    makeADot.className = "myDot";
+                    internalElems.messageToUser.appendChild(makeADot);
+                    internalElems.messageToUser.appendChild(makeACounter);
+
+                    // if process takes onger than 3 minute we quit the job
+                    if (internalElems.intervalSecondCount > internalElems.allowedMinutsOfProcessing*60){
+                        clearInterval(internalElems.intervalToDisplayLoadingProcess); // we clear the interval of the dots that display loading process
+                        internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;Quitted! Process takes longer than " + internalElems.allowedMinutsOfProcessing + " minutes. Please refresh the page with F5 or hard reload it with Ctrl + Shift + R";
+                    }
+
+                }, 1000);
+
+            };
+
+
+            // draw the table with the list of files from the selected dir
+            let createTableOfCheckedFiles = function(myCheckedFilesListArray){
+
+                internalElems.myCheckedFilesList.innerHTML = ""; // empty container, reset
+
+                let myTable = document.createElement("table");
+                myTable.border = 1;
+
+                // column-names/headline of the table
+                let myTableRow = document.createElement("tr");
+
+                let myTableColumn1 = document.createElement("td");
+                myTableColumn1.innerText = "line-counter";
+                myTableColumn1.className = "tableHeader";
+                myTableRow.appendChild(myTableColumn1);
+
+                let myTableColumn2 = document.createElement("td");
+                myTableColumn2.innerText = "kind of change";
+                myTableColumn2.className = "tableHeader";
+                myTableRow.appendChild(myTableColumn2);
+
+                let myTableColumn3 = document.createElement("td");
+                myTableColumn3.innerText = "content has changed";
+                myTableColumn3.className = "tableHeader";
+                myTableRow.appendChild(myTableColumn3);
+
+                let myTableColumn4 = document.createElement("td");
+                myTableColumn4.innerText = "size";
+                myTableColumn4.className = "tableHeader";
+                myTableRow.appendChild(myTableColumn4);
+
+                let myTableColumn5 = document.createElement("td");
+                myTableColumn5.innerText = "file-hash";
+                myTableColumn5.id = "myCloneAmount";
+                myTableColumn5.className = "tableHeader";
+                myTableRow.appendChild(myTableColumn5);
+
+                let myTableColumn6 = document.createElement("td");
+                myTableColumn6.innerText = "file-path";
+                myTableColumn6.className = "tableHeader";
+                myTableRow.appendChild(myTableColumn6);
+
+                myTable.appendChild(myTableRow);
+
+                let atLeastOneChangeTookPlace = "false";
+
+                for (let oneFilePath = 0; oneFilePath < myCheckedFilesListArray.length; oneFilePath++) {
+
+                    let myTableRow = document.createElement("tr");
+                    myTableRow.className = "";
+
+
+                    let myTableColumn1 = document.createElement("td");
+                    myTableColumn1.innerText = oneFilePath+1;
+                    myTableRow.appendChild(myTableColumn1);
+
+
+                    let myKindOfChange = "no change";
+
+                    if (myCheckedFilesListArray[oneFilePath].fileContentHasChanged == "true"){
+                        myKindOfChange = "content changed";
+                        atLeastOneChangeTookPlace = "true";
+                        myTableRow.className = "trHighlight";
+                    } else if (myCheckedFilesListArray[oneFilePath].fileNew == "true") {
+                        myKindOfChange = "added";
+                        atLeastOneChangeTookPlace = "true";
+                        myTableRow.className = "trHighlight";
+                    } else if (myCheckedFilesListArray[oneFilePath].fileDeleted == "true") {
+                        myKindOfChange = "deleted";
+                        atLeastOneChangeTookPlace = "true";
+                        myTableRow.className = "trHighlight";
+                    }
+
+
+                    let myTableColumn2 = document.createElement("td");
+                    myTableColumn2.innerText = myKindOfChange;
+                    myTableRow.appendChild(myTableColumn2);
+
+                    let myTableColumn3 = document.createElement("td");
+                    myTableColumn3.innerText = myCheckedFilesListArray[oneFilePath].fileContentChangeTime;
+                    myTableRow.appendChild(myTableColumn3);
+
+                    let myTableColumn4 = document.createElement("td");
+                    myTableColumn4.innerText = myCheckedFilesListArray[oneFilePath].fileSize;
+                    myTableRow.appendChild(myTableColumn4);
+
+                    let myTableColumn5 = document.createElement("td");
+                    myTableColumn5.innerText = myCheckedFilesListArray[oneFilePath].fileHash;
+                    myTableColumn5.className = myCheckedFilesListArray[oneFilePath].fileHash + " myTableColumnHashes";
+                    myTableRow.appendChild(myTableColumn5);
+
+                    myTableColumn5.onmouseover = function(){
+
+                        // reset the background color of the cells that were set with the previous click
+                        let myTableColumns = document.getElementsByClassName("myTableColumnHashes");
+
+                        for (let oneCell = 0; oneCell < myTableColumns.length; oneCell++) {
+                            myTableColumns[oneCell].bgColor = "";
+                        }
+
+                        // and set the background-color of the cells with the clicked hash
+                        let myFileClones = document.getElementsByClassName(myCheckedFilesListArray[oneFilePath].fileHash);
+                        for (let oneFileClone = 0; oneFileClone < myFileClones.length; oneFileClone++) {
+                            myFileClones[oneFileClone].bgColor = "aqua";
+                        }
+                    };
+
+                    myTableColumn5.onclick = function(){
+
+                        // reset the background color of the cells that were set with the previous click
+                        let myTableColumns = document.getElementsByClassName("myTableColumnHashes");
+                        let amountOfClones = 0;
+
+                        for (let oneCell = 0; oneCell < myTableColumns.length; oneCell++) {
+                            myTableColumns[oneCell].bgColor = "";
+                        }
+
+                        // and set the background-color of the cells with the clicked hash
+                        let myFileClones = document.getElementsByClassName(myCheckedFilesListArray[oneFilePath].fileHash);
+
+                        for (let oneFileClone = 0; oneFileClone < myFileClones.length; oneFileClone++) {
+                            myFileClones[oneFileClone].bgColor = "aqua";
+
+                            if(oneFileClone == myFileClones.length-1){
+                                amountOfClones = oneFileClone;
+                            }
+
+                        }
+
+                        // this.innerText = myCheckedFilesListArray[oneFilePath].fileHash + " (cloneAmount:"+amountOfClones+")";
+                        this.innerText = "cloneAmount: " + amountOfClones;
+
+                        // Copy the clicked hash-code to the clipboard 
+                        // for giving the user the ease to search for in browser by pressing Ctrl + F 
+                        internalElems.myClickedHashInClipboard.value = myCheckedFilesListArray[oneFilePath].fileHash;
+                        internalElems.myClickedHashInClipboard.select(myCheckedFilesListArray[oneFilePath].fileHash);
+                        document.execCommand("copy");
+                    };
+
+
+                    let myTableColumn6 = document.createElement("td");
+
+                    myTableColumn6.innerText = myCheckedFilesListArray[oneFilePath].filePath;
+
+                    myTableRow.appendChild(myTableColumn6);
+
+                    myTable.appendChild(myTableRow);
+                }
+
+                if(atLeastOneChangeTookPlace == "true"){
+                    internalElems.containerResetWatchingStatus.style.display = "block";
+                } else {
+                    internalElems.containerResetWatchingStatus.style.display = "none";
+                }
+
+                internalElems.myCheckedFilesList.appendChild(myTable);
+            };
+
+
+
+
+
+            // removes this dir from watchlist
+            let removePathFromWatchList = function(myDirPathClicked, keepMessageForUser){
+
+
+                // BEGIN displaying loading time
+                // actionInProgressVisualization();
+
+
+                makeAJAXRequest(function(responseContent) {
+
+                    // CALLBACK BEGIN
+
+                    let myJSON = JSON.parse(responseContent);
+
+                    createTableOfWatchList(myJSON.watchList); // the table with the list of dir to watch
+
+                    clearInterval(internalElems.intervalToDisplayLoadingProcess); // we clear the interval of the dots that display loading process
+
+                    if(typeof keepMessageForUser != "undefined"){
+                        internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;" + keepMessageForUser;
+                        clearInterval(internalElems.intervalToDisplayLoadingProcess); // we clear the interval of the dots that display loading process
+                    } else {
+                        internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;" + myJSON.removePathFromWatchList;
+                    }
+
+                    internalElems.myCheckedFilesList.innerHTML = ""; // reset: empty container of last result-set (generated table)
+
+                    // END displaying loading time  
+                    internalElems.actionContainer.style.display = "block"; // show content because he now can click again
+                    internalElems.messageToUser.style.position = "relative"; // set back to relative, needed to be absolute for letting th div grow with the amount of lines in counter
+                    clearInterval(internalElems.intervalToDisplayLoadingProcess); // we clear the interval of the dots that display loading process
+
+                    if(internalElems.resetWatchingStatusClicked == "true"){
+                        addPathToWatchList(internalElems.triggeredThisDirToBeWatched);
+                    }
+
+                    // CALLBACK END
+
+                }, internalElems.myURLToRemovePathFromWatchList, myDirPathClicked);
+            };
+
+
+            let addPathToWatchList = function(myPath){
+
+                let myInputsValue = "unset";
+
+                // means user has clicked on the reset-changes-button ("reset watching status (accept all changes)")
+                if(internalElems.resetWatchingStatusClicked == "true"){
+
+                    myInputsValue = myPath;
+
+                } else { // means user has clicked on the "add"-button to add a dir-path to the watchlist
+
+                    if (internalElems.myDirPathToWatch.value != ""){
+                        // replace backslashes with slashes
+                        myInputsValue = internalElems.myDirPathToWatch.value.replace( /([\\])/g, "/" );
+                    }
+
+                }
+
+
+                // BEGIN displaying loading time
+                actionInProgressVisualization();
+
+                makeAJAXRequest(function(responseContent) {
+
+                    // CALLBACK BEGIN
+
+                    let myJSON = JSON.parse(responseContent);
+
+                    if(myJSON.addDirToWatchList.indexOf("ERROR") >-1){
+
+                        // END displaying loading time  
+                        internalElems.actionContainer.style.display = "block"; // show content because he now can click again
+                        internalElems.messageToUser.style.position = "relative"; // set back to relative, needed to be absolute for letting th div grow with the amount of lines in counter
+                        // and display error-message
+                        internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;" + myJSON.addDirToWatchList;
+                        internalElems.myCheckedFilesList.innerHTML = ""; // reset: empty container of last result-set (generated table)
+                        clearInterval(internalElems.intervalToDisplayLoadingProcess); // we clear the interval of the dots that display loading process
+
+                    } else {
+                        createFileListOfDir(myInputsValue, myJSON);
+                    }
+
+
+
+                    // CALLBACK END
+
+                }, internalElems.myURLToAddPathToWatchlist, myInputsValue);
+            };
+
+
+
+            // check now changes in this dir
+            let checkNowDir = function(myDirPathClicked){
+
+                // Remember the path for having it later in case the user resets the changes after he checked the dir changes.
+                internalElems.triggeredThisDirToBeWatched = myDirPathClicked;
+
+                // BEGIN displaying loading time
+                actionInProgressVisualization();
+
+                makeAJAXRequest(function(responseContent) {
+
+                    // CALLBACK BEGIN
+
+                    let myJSON = JSON.parse(responseContent);
+
+                    internalElems.messageToUser.innerHTML = "";
+
+                    if(responseContent.indexOf("ERROR") >-1){
+
+                        internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;" + myJSON.checkFilesOfSelectedDir;
+                        internalElems.myCheckedFilesList.innerHTML = ""; // reset: empty container of last result-set (generated table)
+                        internalElems.containerResetWatchingStatus.style.display = "none"; 
+
+                    } else {
+
+                        createTableOfCheckedFiles(myJSON);
+                        internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;Dir changes listed.";
+                    }
+
+                    // END displaying loading time  
+                    internalElems.actionContainer.style.display = "block"; // show content because he now can click again
+                    internalElems.messageToUser.style.position = "relative"; // set back to relative, needed to be absolute for letting th div grow with the amount of lines in counter
+                    clearInterval(internalElems.intervalToDisplayLoadingProcess); // we clear the interval of the dots that display loading process
+
+
+
+                    // CALLBACK END
+
+                }, internalElems.myURLToCheckDir, myDirPathClicked);
+            };
+
+
+
+
+            // draw the table with the dir in watch-list
+            let createTableOfWatchList = function(myWatchListArray){
+
+                internalElems.myWatchList.innerHTML = ""; // empty container, reset
+
+                for (let onePath = 0; onePath < myWatchListArray.length; onePath++) {
+
+                    if (myWatchListArray[onePath] != ""){
+
+                        let myLine = document.createElement("div");
+                        myLine.className = "myLineWatchlist";
+                        internalElems.myWatchList.appendChild(myLine);
+
+
+
+                        let removeFromWatchList = document.createElement("div");
+                        removeFromWatchList.className = "removeFromWatchList";
+
+                        removeFromWatchList.innerText = "remove from watchlist";
+                        myLine.appendChild(removeFromWatchList);
+
+                        removeFromWatchList.onclick = function(){
+                            removePathFromWatchList(myWatchListArray[onePath]);
+                        };
+
+
+
+                        let myWatchDir = document.createElement("div");
+                        myWatchDir.className = "myWatchDir";
+
+                        myWatchDir.innerText = myWatchListArray[onePath];
+                        myLine.appendChild(myWatchDir);
+
+                        myWatchDir.onclick = function(){
+                            checkNowDir(myWatchListArray[onePath]);
+                        };
+
+                    }
+                }
+            };
+
+
+
+            // on adding a dir to watchlist we create a file, that contains a list of the files from that dir. 
+            // In that file we collect some details (the hash an the path of the file) of the files from inside of that dir,
+            // so later on we compare those details to find out what has changed.
+            let createFileListOfDir = function(myInputsValue, myJSON){
+
+                makeAJAXRequest(function(responseContent) {
+
+                    // CALLBACK BEGIN
+                    let getMyActualResponse = JSON.parse(responseContent);
+
+
+                    if(internalElems.resetWatchingStatusClicked == "true"){
+                        internalElems.resetWatchingStatusClicked = "false"; // reset the flag of checking if user has clicked the reset-button
+                        internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;SUCCESS: status of changes in dir is resetted now. ("+ internalElems.triggeredThisDirToBeWatched +")";
+                    } else {
+
+                        if(getMyActualResponse.createFileList.indexOf("ERROR") >-1){
+                            internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;" + getMyActualResponse.createFileList;
+
+                            removePathFromWatchList(myInputsValue, getMyActualResponse.createFileList); // we remove it again from the list due to too many files in list
+                        } else {
+                            internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;" + myJSON.addDirToWatchList;
+                        }
+
+                    }
+
+                    // avoid that user is clicking the reset-button again by hiding the button again, not needed yet.
+                    internalElems.containerResetWatchingStatus.style.display = "none"; 
+
+                    internalElems.myCheckedFilesList.innerHTML = ""; // reset: empty container of last result-set (generated table)
+
+                    // END displaying loading time  
+                    internalElems.actionContainer.style.display = "block"; // show content because he now can click again
+                    internalElems.messageToUser.style.position = "relative"; // set back to relative, needed to be absolute for letting th div grow with the amount of lines in counter
+                    clearInterval(internalElems.intervalToDisplayLoadingProcess); // we clear the interval of the dots that display loading process
+
+                    createTableOfWatchList(myJSON.watchList); // the table with the list of dir to watch
+
+                    // CALLBACK END
+
+                }, internalElems.myURLToCreateFileListOfDir, myInputsValue);
+
+            };
+
+
+
+
+
+            let initializeEvents = function(){
+
+
+                // reset the change-status of a dir after chnges have been displayed
+                internalElems.resetWatchingStatus.onclick = function(){
+                    internalElems.resetWatchingStatusClicked = "true";
+                    removePathFromWatchList(internalElems.triggeredThisDirToBeWatched);
+                };
+
+
+
+                // adding a path to watch-list
+                internalElems.addPathToWatchList.onclick = function(){
+                    addPathToWatchList();
+                };
+
+
+                // onload we want to retrieve the watch-list of dir to watch, if there is one.
+                makeAJAXRequest(function(responseContent) {
+
+                    // CALLBACK BEGIN
+
+                    if (typeof(responseContent) == "string" && responseContent.indexOf("requesting the file-url") >-1){
+
+                        internalElems.messageToUser.innerHTML = "&nbsp;&nbsp;It seems that the PHP-Sserver is not available!";
+                        internalElems.addPathToWatchList.style.display = "none";
+
+                    } else {
+
+                        let myJSON = JSON.parse(responseContent);
+
+                        if(responseContent.indexOf("ERROR") >-1){
+                            internalElems.myWatchList.innerText = myJSON.watchList.split("ERROR:")[1];
+                        } else {
+                            let myWatchListArray = myJSON.watchList
+                            createTableOfWatchList(myWatchListArray);
+                        }
+
+                    }
+
+
+                    // CALLBACK END
+
+                }, internalElems.myURLToGetWatchlist);
+
+            };
+
+
+
+
+            // Public (can be accessed from other classes)
+            this.init = function(){
+                // Private functions can only be used or invoked inside the class.
+                initializeEvents();
+            };
+        };
+
+
+
+
+
+
+        /****************************************************************
+         * INSTANTIATE (new) a variable (e.g. "mySecC")                 *
+         * with the class from this file ("watchdir")                      *
+         * to make the class available to be invoked (in the "view.htm")*
+        ****************************************************************/
+        let myFirC = new window.watchdir();
+
+
+        /**
+         * INVOKE the initialisation of the application (starting).
+        */
+        myFirC.init();
+
+
+
+    </script>
+
+</body>
+
+</html>
