@@ -1,6 +1,9 @@
 
-----------------------------------------------------------------------------------------
-Requires a webserver with php | App only tested with: 
+
+
+
+
+watchdir requires a webserver with php | App only tested with: 
 ----------------------------------------------------------------------------------------
 - Microsoft Edge Version 92.0.902.67 (64-bit) <br>
 - XAMPP Version 8.2.12 (Apache 2.4.58 + PHP 8.2.12)
@@ -9,8 +12,7 @@ Requires a webserver with php | App only tested with:
 
 
 
-----------------------------------------------------------------------------------------
-This is what it looks like:
+This is what it looks like: :file_folder: --> :watch: --> :open_file_folder: --> :monocle_face: --> :triangular_flag_on_post: --> :eyes: --> :mag: --> :astonished:
 ----------------------------------------------------------------------------------------
 
 First screenshot: three dirs are remembered/saved in the watchlist. <br>
@@ -45,7 +47,7 @@ e. In lines 24 and 26 two files were deleted.<br>
 <br><br><br>
 
 
-----------------------------------------------------------------------------------------
+
 Detailed description of "watchdir":
 ----------------------------------------------------------------------------------------
 
@@ -86,7 +88,7 @@ Only if in that added or deleted directory are files, those files will be displa
 
 
 
-----------------------------------------------------------------------------------------
+
 Note this weakness: 
 ----------------------------------------------------------------------------------------
 
@@ -110,7 +112,7 @@ now with an change in that new file. <br>
 <br><br>
 
 
-----------------------------------------------------------------------------------------
+
 Here is an use-case-list with some examples on what the app highlights:
 ----------------------------------------------------------------------------------------
 
@@ -120,7 +122,7 @@ Here is an use-case-list with some examples on what the app highlights:
 
 
 
-----------------------------------------------------------------------------------------
+
 list of the files of the app:
 ----------------------------------------------------------------------------------------
 
