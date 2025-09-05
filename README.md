@@ -8,11 +8,13 @@ watchdir requires a webserver with php | App only tested with:
 - Microsoft Edge Version 92.0.902.67 (64-bit) <br>
 - XAMPP Version 8.2.12 (Apache 2.4.58 + PHP 8.2.12)
 
-<br><br>
+<br>
 
+### :file_folder: --> :watch: --> :open_file_folder: --> :monocle_face: --> :triangular_flag_on_post: --> :eyes: --> :mag: --> :astonished:
 
+<br>
 
-This is what it looks like: :file_folder: --> :watch: --> :open_file_folder: --> :monocle_face: --> :triangular_flag_on_post: --> :eyes: --> :mag: --> :astonished:
+This is what it looks like:
 ----------------------------------------------------------------------------------------
 
 First screenshot: three dirs are remembered/saved in the watchlist. <br>
