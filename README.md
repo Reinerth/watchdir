@@ -3,7 +3,7 @@
 
 
 
-watchdir requires a webserver with php | App only tested with: 
+watchdir requires a webserver with php | App only tested with:
 ----------------------------------------------------------------------------------------
 - Microsoft Edge Version 92.0.902.67 (64-bit) <br>
 - XAMPP Version 8.2.12 (Apache 2.4.58 + PHP 8.2.12)
